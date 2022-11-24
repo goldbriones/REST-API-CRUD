@@ -23,8 +23,8 @@ public class EmployeeService {
 
     public Employee addEmployee(Employee employee) {
         repository.save(employee);
-        log.info("-----New employee added to repository -----" +
-                employee.toString());
+        log.info("-----New employee added to repository -----");
+
         return repository.save(employee);
     }
 
@@ -33,11 +33,11 @@ public class EmployeeService {
             throws ResourceNotFoundException {
         repository.findById(employeeId).orElseThrow(
                 ()-> new ResourceNotFoundException
-                        ("Employee not found for this request ID :" + employeeId));
+                        ("Employee NOT FOUND for this request ID :" + employeeId));
 
         repository.deleteById(employeeId);
         log.info("-----Employee details deleted to repository -----"
-                + employeeId.toString());
+                + employeeId);
         return ResponseEntity.ok().build();
     }
 
@@ -49,7 +49,7 @@ public class EmployeeService {
             throws ResourceNotFoundException {
         Employee employee = repository.findById(employeeId).orElseThrow(
                 ()-> new ResourceNotFoundException
-                        ("Employee not found for this request ID :" + employeeId));
+                        ("Employee NOT FOUND for this request ID :" + employeeId));
         log.info("\n- Employee ID -" + employeeId +  "\n-- Employee Details---" +
                 employee.toString());
         return ResponseEntity.ok().body(employee);
@@ -65,6 +65,7 @@ public class EmployeeService {
         employee.setLastName(employeeDetails.getLastName());
         employee.setEmailId(employeeDetails.getEmailId());
         employee.setRoleName(employeeDetails.getRoleName());
+
         repository.save(employee);
         log.info("\n-----Employee details updated to repository -----" + employeeId);
         return ResponseEntity.ok().body(employee);
