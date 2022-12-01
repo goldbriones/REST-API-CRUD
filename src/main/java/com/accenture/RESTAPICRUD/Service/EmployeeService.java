@@ -43,6 +43,8 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployee() {
      return repository.findAll();
+     //Comparators - update
+        //Return object
     }
 
     public ResponseEntity<Employee> findEmployeeById(@PathVariable(value = "id") long employeeId)
@@ -65,9 +67,10 @@ public class EmployeeService {
         employee.setLastName(employeeDetails.getLastName());
         employee.setEmailId(employeeDetails.getEmailId());
         employee.setRoleName(employeeDetails.getRoleName());
-
         repository.save(employee);
         log.info("\n-----Employee details updated to repository -----" + employeeId);
         return ResponseEntity.ok().body(employee);
     }
+
+//   Validation
 }

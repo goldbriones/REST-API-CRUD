@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+
 
 @Entity
 @Table(name = "employee_db")
@@ -22,20 +22,24 @@ public class Employee {
     private long id;
 
     @Column(name = "first_name", nullable = false)
-    @NotBlank(message = "The First Name is required")
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
-    @NotBlank(message = "The Last Name is required")
     private String lastName;
 
     @Column(name = "email_id" , nullable = false)
-    @NotBlank(message = "The Email ID is required")
     private String emailId;
 
     @Column(name = "role_name", nullable = false)
-    @NotBlank(message = "The Role Name is required")
     private String roleName;
+
+
+    public Employee(String firstName, String lastName, String emailId, String roleName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailId = emailId;
+        this.roleName = roleName;
+    }
 
     public Employee(long id,
                     String firstName,

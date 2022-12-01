@@ -1,6 +1,7 @@
 package com.accenture.RESTAPICRUD.Controller;
 
 import com.accenture.RESTAPICRUD.Entity.Employee;
+import com.accenture.RESTAPICRUD.Exception.Exceptions;
 import com.accenture.RESTAPICRUD.Exception.ResourceNotFoundException;
 import com.accenture.RESTAPICRUD.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,26 +14,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api")
 public class EmployeeController {
-
+    //ResponseEntity - controller
     @Autowired
     private EmployeeService service;
 
-    @PostMapping("/employee")
-    public Employee addEmployee(@Valid @RequestBody Employee employee) {
-
-
+    @PostMapping(path="/employee", consumes = "application/json", produces = "application/json")
+    public Employee addEmployee(@RequestBody Employee employee) throws Exceptions {
         return service.addEmployee(employee);
     }
 
-    @GetMapping("/employee/{id}")
+    @GetMapping(path="/employee/{id}", produces = "application/json")
     public ResponseEntity<Employee> getEmployeeById(
             @PathVariable(value = "id") Long employeeId, @RequestBody Employee employee)
     throws ResourceNotFoundException{
@@ -52,7 +48,7 @@ public class EmployeeController {
         return service.updateEmployee(id, employee);
     }
 
-    @GetMapping("/allEmployees")
+    @GetMapping(path ="/allEmployees", produces = "application/json")
     public List<Employee> getAllEmployee(Employee employee) {
         return service.getAllEmployee();
     }
