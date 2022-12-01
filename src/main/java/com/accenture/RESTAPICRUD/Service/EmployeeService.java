@@ -67,6 +67,7 @@ public class EmployeeService {
         employee.setLastName(employeeDetails.getLastName());
         employee.setEmailId(employeeDetails.getEmailId());
         employee.setRoleName(employeeDetails.getRoleName());
+
         repository.save(employee);
         log.info("\n-----Employee details updated to repository -----" + employeeId);
         return ResponseEntity.ok().body(employee);
