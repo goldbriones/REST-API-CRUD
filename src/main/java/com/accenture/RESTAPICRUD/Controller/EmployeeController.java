@@ -15,42 +15,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class EmployeeController {
-    //ResponseEntity - controller
     @Autowired
     private EmployeeService service;
 
-    @PostMapping(path="/employee", consumes = "application/json", produces = "application/json")
-    public Employee addEmployee(@RequestBody Employee employee) throws Exceptions {
-        return service.addEmployee(employee);
+    @PostMapping(path="/add/employee", consumes = "application/json", produces = "application/json")
+    public Employee saveEmployee(@RequestBody Employee employeeRequest) throws Exceptions {
+        return service.saveEmployee(service.validateAddRequest(employeeRequest));
+    }
+
+    @GetMapping(path="/EmployeeLists", produces = "application/json")
+    public ResponseEntity<List<Employee>> getAllEmployee() {
+        return ResponseEntity.ok(service.getAllEmployee());
     }
 
     @GetMapping(path="/employee/{id}", produces = "application/json")
-    public ResponseEntity<Employee> getEmployeeById(
-            @PathVariable(value = "id") Long employeeId, @RequestBody Employee employee)
-    throws ResourceNotFoundException{
-        return service.findEmployeeById(employeeId);
+    public ResponseEntity<Optional<Employee>> getEmployee(@PathVariable long id) {
+        return ResponseEntity.ok(service.GetEmployee(id));
     }
-
+    @PutMapping(path="/employee/{id}", produces = "application/json")
+    public Employee updateEmployee(@PathVariable long id, @RequestBody Employee employeeRequest)
+            throws Exceptions {
+        Employee forUpdate = Employee.build(id,
+                employeeRequest.getFirstName(),
+                employeeRequest.getLastName(),
+                employeeRequest.getEmailId(),
+                employeeRequest.getRoleName());
+        return service.updateEmployeeById(service.validateUpdateRequest(forUpdate));
+    }
     @DeleteMapping("/employee/{id}")
     public ResponseEntity<Employee> deleteEmployee(
             @PathVariable(value = "id") long employeeId) throws ResourceNotFoundException {
-        return service.deleteEmployeeById(employeeId);
+        return service.deleteById(employeeId);
+    }
     }
 
-    @PutMapping("/employee/{id}")
-    public ResponseEntity<Employee> updateEmployee(
-            @PathVariable Long id, @RequestBody Employee employee)
-            throws Exception{
-        return service.updateEmployee(id, employee);
-    }
-
-    @GetMapping(path ="/allEmployees", produces = "application/json")
-    public List<Employee> getAllEmployee(Employee employee) {
-        return service.getAllEmployee();
-    }
-
-}
