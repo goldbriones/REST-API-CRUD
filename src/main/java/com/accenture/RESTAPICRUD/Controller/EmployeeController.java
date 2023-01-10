@@ -1,6 +1,6 @@
 package com.accenture.RESTAPICRUD.Controller;
 
-import com.accenture.RESTAPICRUD.Entity.Employee;
+import com.accenture.RESTAPICRUD.Domain.Employee;
 import com.accenture.RESTAPICRUD.Exception.Exceptions;
 import com.accenture.RESTAPICRUD.Exception.ResourceNotFoundException;
 import com.accenture.RESTAPICRUD.Service.EmployeeService;
@@ -35,7 +35,7 @@ public class EmployeeController {
 
     @GetMapping(path="/employee/{id}", produces = "application/json")
     public ResponseEntity<Optional<Employee>> getEmployee(@PathVariable long id) {
-        return ResponseEntity.ok(service.GetEmployee(id));
+        return ResponseEntity.ok(service.findEmployeeById(id));
     }
     @PutMapping(path="/employee/{id}", produces = "application/json")
     public Employee updateEmployee(@PathVariable long id, @RequestBody Employee employeeRequest)
@@ -48,9 +48,9 @@ public class EmployeeController {
         return service.updateEmployeeById(service.validateUpdateRequest(forUpdate));
     }
     @DeleteMapping("/employee/{id}")
-    public ResponseEntity<Employee> deleteEmployee(
+    public String deleteEmployee(
             @PathVariable(value = "id") long employeeId) throws ResourceNotFoundException {
-        return service.deleteById(employeeId);
+        return service.deleteEmployeeById(employeeId);
     }
     }
 

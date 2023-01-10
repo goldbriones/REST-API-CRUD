@@ -1,4 +1,4 @@
-package com.accenture.RESTAPICRUD.Entity;
+package com.accenture.RESTAPICRUD.Domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
