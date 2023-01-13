@@ -36,14 +36,13 @@ public class EmployeeService {
         return repository.findAll();
     }
 
-    public Optional<Employee> findEmployeeById(Long employeeId) {
+    public Optional<Employee> findEmployeeById(long employeeId) {
         return repository.findById(employeeId);
     }
 
 
-    public Employee updateEmployeeById(Employee employeeRequestWithID) {
-        return repository.save(employeeRequestWithID);
-
+    public Employee updateEmployeeById(Employee employeeUpdate)  {
+        return repository.save(employeeUpdate);
     }
 
     public Employee validateAddRequest (Employee employeeRequest) throws Exceptions {

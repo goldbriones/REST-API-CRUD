@@ -23,6 +23,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService service;
 
+
     @PostMapping(path="/add/employee", consumes = "application/json", produces = "application/json")
     public Employee saveEmployee(@RequestBody Employee employeeRequest) throws Exceptions {
         return service.saveEmployee(service.validateAddRequest(employeeRequest));
@@ -34,12 +35,21 @@ public class EmployeeController {
     }
 
     @GetMapping(path="/employee/{id}", produces = "application/json")
-    public ResponseEntity<Optional<Employee>> getEmployee(@PathVariable long id) {
+    public ResponseEntity<Optional<Employee>> getEmployee(@PathVariable long id)
+    throws ResourceNotFoundException
+    {
+        service.findEmployeeById(id).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Employee NOT FOUND for this request ID : "  + id));
         return ResponseEntity.ok(service.findEmployeeById(id));
     }
     @PutMapping(path="/employee/{id}", produces = "application/json")
     public Employee updateEmployee(@PathVariable long id, @RequestBody Employee employeeRequest)
-            throws Exceptions {
+            throws Exceptions, ResourceNotFoundException
+    {
+        service.findEmployeeById(id).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Employee NOT FOUND for this request ID : "  + id));
         Employee forUpdate = Employee.build(id,
                 employeeRequest.getFirstName(),
                 employeeRequest.getLastName(),
@@ -49,8 +59,12 @@ public class EmployeeController {
     }
     @DeleteMapping("/employee/{id}")
     public String deleteEmployee(
-            @PathVariable(value = "id") long employeeId) throws ResourceNotFoundException {
+            @PathVariable(value = "id") long employeeId)
+        throws ResourceNotFoundException  {
+        service.findEmployeeById(employeeId).orElseThrow(
+                () -> new ResourceNotFoundException(
+                        "Employee NOT FOUND for this request ID : "  + employeeId));
         return service.deleteEmployeeById(employeeId);
     }
-    }
+}
 
